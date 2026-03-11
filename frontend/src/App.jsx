@@ -15,7 +15,7 @@ export default function App() {
             <Route path="/" element={<Home />} />
             <Route path="/topic/:topicSlug" element={<TopicPage />} />
             <Route path="/topic/:topicSlug/:lessonSlug" element={<LessonPage />} />
-            <Route path="/Compiler" element={<Compiler />} />
+            <Route path="/compiler" element={<Compiler />} />
           </Routes>
         </div>
       </div>

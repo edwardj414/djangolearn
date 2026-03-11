@@ -45,7 +45,7 @@ print(greet("Developer"))
         {/* Editor Container - Glassmorphism Wrapper */}
         <div className="flex-1 flex flex-col min-h-[600px] bg-gradient-to-br from-purple-500/10 to-indigo-500/10 p-1 rounded-2xl border border-white/5 shadow-2xl">
           <div className="flex-1 bg-[#1A122E]/90 backdrop-blur-xl rounded-xl p-6 flex flex-col">
-             <CodeEditor defaultCode={defaultCode} />
+            <CodeEditor defaultCode={defaultCode} />
           </div>
         </div>
 

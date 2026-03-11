@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 1. Global Styles */
+body {
+  background-color: #0F0A1F;
+  @apply antialiased selection:bg-purple-500/30 text-slate-300;
+}
+
+/* 2. Scrollbars (Unified) */
+.sidebar-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+.sidebar-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+/* 3. Markdown/Prose styles */
+.prose h1 { @apply text-3xl font-extrabold text-white mt-10 mb-6; }
+.prose h2 { @apply text-2xl font-bold text-slate-100 mt-8 mb-4 border-b border-white/10 pb-2; }
+.prose h3 { @apply text-xl font-semibold text-slate-200 mt-6 mb-3; }
+.prose p  { @apply text-slate-400 leading-relaxed mb-6 text-[17px]; }
+.prose strong { @apply font-bold text-white; }
+.prose a { @apply text-purple-400 hover:text-purple-300 underline underline-offset-4 transition-colors; }
+.prose hr { @apply my-10 border-white/5; }
+
+/* 4. Lists & Lifecycle Flow Fix */
+.prose ul, .prose ol { @apply mb-6 space-y-2 text-slate-400; }
+.prose li { @apply leading-relaxed list-none flex flex-col items-start; }
+
+/* This removes the "block" look from arrows */
+.prose li:contains('↓') {
+  @apply text-purple-500 font-bold ml-6 my-1 opacity-50;
+}
+
+/* Update this in index.css */
+.prose code {
+  /* Ensure we do NOT have 'block' or 'w-full' here */
+  @apply font-mono text-[0.9em];
+}
+
+/* Ensure the syntax highlighter keeps a clean background */
+.prose pre code {
+  @apply bg-transparent border-none p-0 shadow-none !important;
+}
+
+/* 6. Quote Block */
+.prose blockquote {
+  @apply border-l-4 border-purple-500 pl-6 italic text-purple-100 bg-purple-500/10 py-4 pr-4 rounded-r-xl my-8;
+}
+
+/* 7. Tables - Higher Contrast */
+.prose table { @apply w-full border-collapse my-8 text-sm overflow-hidden rounded-xl border border-white/10; }
+.prose thead { @apply bg-white/5; }
+.prose th { @apply text-slate-200 font-bold text-left px-4 py-3 border-b border-white/10; }
+.prose td { @apply px-4 py-3 border-b border-white/5 text-slate-400; }
+.prose tr:nth-child(even) { @apply bg-white/[0.02]; }
+
+/* 8. Component Specifics */
+.output-box { font-family: 'Fira Mono', 'Consolas', monospace; }

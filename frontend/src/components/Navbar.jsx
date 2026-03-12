@@ -64,11 +64,12 @@ export default function Navbar() {
               {results.map((r, i) => (
                 <button
                   key={i}
-                  className="w-full text-left px-4 py-3 hover:bg-purple-600/10 flex flex-col border-b border-white/5 last:border-0 transition-colors"
+                  /* Added 'group' class here to control hover states of children */
+                  className="group w-full text-left px-4 py-3 hover:bg-purple-600/20 flex flex-col border-b border-white/5 last:border-0 transition-colors"
                   onClick={() => { navigate(r.url); setOpen(false); setQuery('') }}
                 >
-                  <span className="text-sm font-medium text-slate-200 group-hover:text-white">{r.title}</span>
-                  <span className="text-[10px] uppercase tracking-wider font-bold text-purple-400/80">{r.topic}</span>
+                  <span className="text-sm font-medium text-slate-200 group-hover:text-white transition-colors">{r.title}</span>
+                  <span className="text-[10px] uppercase tracking-wider font-bold text-purple-400/60 group-hover:text-purple-400/90 transition-colors">{r.topic}</span>
                 </button>
               ))}
             </div>
@@ -77,7 +78,8 @@ export default function Navbar() {
 
         {/* Nav Links */}
         <div className="hidden md:flex items-center gap-6 ml-auto">
-          <Link to="/" className="text-sm text-slate-400 hover:text-purple-400 font-medium transition-colors">
+          {/* UPDATED: changed to="/#topics" */}
+          <Link to="/#topics" className="text-sm text-slate-400 hover:text-purple-400 font-medium transition-colors">
             Tutorials
           </Link>
           <a

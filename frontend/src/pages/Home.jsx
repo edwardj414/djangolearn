@@ -1,8 +1,9 @@
 // src/pages/Home.jsx
-import { useEffect, useState } from 'react'
-import { Link, useLocation } from 'react-router-dom' // ADDED: useLocation
+import { useEffect, useState, useRef } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import { getTopics } from '../api'
-import { BookOpen, Code2, Zap, ArrowRight, Users, Star } from 'lucide-react'
+// FIX 1: Import the Cat icon
+import { BookOpen, Code2, Zap, ArrowRight, Users, Star, Cat } from 'lucide-react'
 
 // Animated Number Component
 function AnimatedNumber({ value, suffix = '' }) {
@@ -35,7 +36,6 @@ function AnimatedNumber({ value, suffix = '' }) {
   return <>{count}{suffix}</>;
 }
 
-// Updated badge colors for dark theme
 const DIFF_BADGE = {
   beginner: 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20',
   intermediate: 'bg-amber-500/10 text-amber-400 border border-amber-500/20',
@@ -45,16 +45,25 @@ const DIFF_BADGE = {
 export default function Home() {
   const [topics, setTopics] = useState([])
   const [loading, setLoading] = useState(true)
-
-  // NEW: Get current route location to read the hash
   const location = useLocation();
+  const cursorRef = useRef(null);
 
-  // NEW: Scroll to the topics section if the URL has #topics
+  // Mouse tracker - keeps track of cursor position
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      if (cursorRef.current) {
+        // Move the container to the mouse coordinates
+        cursorRef.current.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+      }
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
   useEffect(() => {
     if (location.hash === '#topics') {
       const element = document.getElementById('topics');
       if (element) {
-        // Adding a slight delay ensures the DOM has painted before scrolling
         setTimeout(() => {
           element.scrollIntoView({ behavior: 'smooth' });
         }, 100);
@@ -68,25 +77,34 @@ export default function Home() {
   }, [])
 
   return (
-    // The main wrapper is now relative to hold the layers properly
-    <div className="min-h-screen bg-[#0F0A1F] text-slate-200 relative selection:bg-purple-500/30">
+    <div className="min-h-screen bg-[#0F0A1F] text-slate-200 relative selection:bg-purple-500/30 overflow-hidden">
+
+      {/* FIX 2: THE NEW MINI CAT CURSOR FOLLOWER */}
+      <div
+        ref={cursorRef}
+        // Changed styles:
+        // 1. Removed big size and heavy blur.
+        // 2. Increased duration to 'duration-500' for a noticeable "following" lag.
+        // 3. Added 'ml-3 mt-3' so the cat sits slightly to the bottom-right of the pointer, not directly under it.
+        className="fixed top-0 left-0 z-50 pointer-events-none transition-transform duration-500 ease-out hidden md:block ml-3 mt-3 text-purple-400"
+      >
+        <div className="relative">
+           {/* Optional: A tiny cute glow behind the cat so it fits the theme */}
+           <div className="absolute inset-0 bg-purple-500/50 blur-md rounded-full scale-75 animate-pulse"></div>
+           {/* The Cat Icon */}
+           <Cat size={28} fill="currentColor" className="relative z-10 drop-shadow-lg" />
+        </div>
+      </div>
 
       {/* FULL PAGE DYNAMIC BACKGROUND */}
       <div className="fixed inset-0 w-full h-full pointer-events-none z-0 flex justify-center items-center overflow-hidden">
-        {/* Top Left Purple Glow */}
         <div className="absolute top-[-5%] left-[5%] w-[30rem] h-[30rem] bg-purple-600/30 rounded-full mix-blend-screen blur-[120px] animate-blob"></div>
-
-        {/* Top Right Indigo Glow */}
         <div className="absolute top-[10%] right-[5%] w-[30rem] h-[30rem] bg-indigo-600/30 rounded-full mix-blend-screen blur-[120px] animate-blob animation-delay-2000"></div>
-
-        {/* Bottom Left Fuchsia Glow */}
         <div className="absolute bottom-[10%] left-[20%] w-[35rem] h-[35rem] bg-fuchsia-600/20 rounded-full mix-blend-screen blur-[120px] animate-blob animation-delay-4000"></div>
-
-        {/* Bottom Right Violet Glow so the bottom of the page isn't dark */}
         <div className="absolute bottom-[-10%] right-[10%] w-[30rem] h-[30rem] bg-violet-600/20 rounded-full mix-blend-screen blur-[120px] animate-blob animation-delay-2000"></div>
       </div>
 
-      {/* ALL PAGE CONTENT (wrapped in z-10 so it sits ABOVE the floating background) */}
+      {/* ALL PAGE CONTENT */}
       <div className="relative z-10">
 
         {/* Hero Section */}
@@ -147,8 +165,7 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Topics Grid: Glassmorphism */}
-        {/* ADDED: id="topics" so the scroll function can find it */}
+        {/* Topics Grid */}
         <div id="topics" className="max-w-5xl mx-auto px-6 py-20">
           <h2 className="text-3xl font-bold text-white mb-2">All Topics</h2>
           <p className="text-purple-200/60 mb-10">Structured from beginner to advanced — start anywhere.</p>
@@ -200,7 +217,7 @@ export default function Home() {
           )}
         </div>
 
-        {/* Dark Theme Features Section */}
+        {/* Features Section */}
         <div className="border-t border-white/5 py-24">
           <div className="max-w-5xl mx-auto px-6 text-center">
             <h2 className="text-3xl font-bold text-white mb-12">Why DjangoLearn?</h2>
@@ -208,7 +225,7 @@ export default function Home() {
               {[
                 { icon: '⚡', title: 'Live Code Editor', desc: 'Run Python code directly in your browser. No installation required.' },
                 { icon: '📚', title: 'Structured Content', desc: 'From installation to deployment — everything in a logical order.' },
-                { icon: '️‍⛓️‍💥', title: 'Completely Free', desc: 'Open source and free forever. No account needed to start learning.' },
+                { icon: '🆓', title: 'Completely Free', desc: 'Open source and free forever. No account needed to start learning.' },
               ].map(f => (
                 <div key={f.title} className="bg-white/[0.03] backdrop-blur-md rounded-2xl p-8 border border-white/5 hover:border-purple-500/30 transition-colors duration-300">
                   <div className="text-5xl mb-6">{f.icon}</div>

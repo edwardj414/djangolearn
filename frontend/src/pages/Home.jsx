@@ -225,7 +225,7 @@ export default function Home() {
               {[
                 { icon: '⚡', title: 'Live Code Editor', desc: 'Run Python code directly in your browser. No installation required.' },
                 { icon: '📚', title: 'Structured Content', desc: 'From installation to deployment — everything in a logical order.' },
-                { icon: '🆓', title: 'Completely Free', desc: 'Open source and free forever. No account needed to start learning.' },
+                { icon: '⛓️‍💥', title: 'Completely Free', desc: 'Open source and free forever. No account needed to start learning.' },
               ].map(f => (
                 <div key={f.title} className="bg-white/[0.03] backdrop-blur-md rounded-2xl p-8 border border-white/5 hover:border-purple-500/30 transition-colors duration-300">
                   <div className="text-5xl mb-6">{f.icon}</div>

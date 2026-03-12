@@ -35,7 +35,8 @@ export default function Navbar() {
     <nav className="bg-[#0F0A1F]/80 backdrop-blur-md border-b border-white/5 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 h-14 flex items-center gap-6">
         {/* Logo - Matches Sidebar Purple */}
-        <Link to="/" className="flex items-center gap-2 font-bold text-xl text-purple-400 shrink-0">
+        <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+         className="flex items-center gap-2 font-bold text-xl text-purple-400 shrink-0">
           <BookOpen size={24} className="text-purple-500" />
           <span className="tracking-tight text-white">Django<span className="text-purple-400">Learn</span></span>
         </Link>

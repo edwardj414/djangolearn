@@ -60,3 +60,23 @@ body {
 
 /* 8. Component Specifics */
 .output-box { font-family: 'Fira Mono', 'Consolas', monospace; }
+
+@keyframes blob {
+  0% { transform: translate(0px, 0px) scale(1); }
+  33% { transform: translate(50px, -70px) scale(1.1); }
+  66% { transform: translate(-40px, 40px) scale(0.9); }
+  100% { transform: translate(0px, 0px) scale(1); }
+}
+
+.animate-blob {
+  /* Reduced from 10s to 6s for faster movement */
+  animation: blob 6s infinite alternate ease-in-out;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}

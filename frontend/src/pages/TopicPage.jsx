@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { useParams, Navigate, Link } from 'react-router-dom'
 import { getTopics } from '../api'
 import Sidebar from '../components/Sidebar'
-import { BookOpen, ArrowRight } from 'lucide-react'
+import { BookOpen, ArrowRight, Sparkles } from 'lucide-react'
 
 export default function TopicPage() {
   const { topicSlug } = useParams()
@@ -11,7 +11,7 @@ export default function TopicPage() {
   const [topic, setTopic] = useState(null)
   const [loading, setLoading] = useState(true)
 
-  // NEW: State for the countdown timer
+  // State for the countdown timer
   const [timeLeft, setTimeLeft] = useState(50)
 
   // Fetch data
@@ -25,7 +25,7 @@ export default function TopicPage() {
     }).catch(() => setLoading(false))
   }, [topicSlug])
 
-  // NEW: Timer logic
+  // Timer logic
   useEffect(() => {
     // Only start the countdown if it's done loading and there are no lessons
     if (!loading && (!topic?.lessons || topic.lessons.length === 0)) {
@@ -61,20 +61,36 @@ export default function TopicPage() {
             </p>
           </div>
         ) : (
-          /* Upgraded "Empty State" with Dynamic Timer */
-          <div className="flex flex-col items-center text-center max-w-md p-8 bg-white/[0.03] border border-white/5 rounded-2xl backdrop-blur-sm shadow-2xl">
+          /* Upgraded "Empty State" with Dynamic Timer & Easter Egg */
+          <div className="flex flex-col items-center text-center max-w-md p-8 bg-white/[0.03] border border-white/5 rounded-2xl backdrop-blur-sm shadow-2xl transition-all duration-500">
             <div className="p-4 bg-purple-500/10 rounded-full mb-4">
-              <BookOpen size={32} className="text-purple-400" />
+              {timeLeft > 0 ? (
+                <BookOpen size={32} className="text-purple-400" />
+              ) : (
+                <Sparkles size={32} className="text-indigo-400 animate-pulse" />
+              )}
             </div>
 
-            {/* Display the active countdown */}
-            <h2 className="text-2xl font-bold text-white mb-2">
-              Coming within {timeLeft} Seconds
-            </h2>
-
-            <p className="text-slate-400 mb-8 leading-relaxed">
-              The lessons for <span className="text-purple-300 font-semibold">{topic?.title || 'this topic'}</span> are currently being written. Check back soon!
-            </p>
+            {/* NEW: Conditional UI based on the timer hitting 0 */}
+            {timeLeft > 0 ? (
+              <>
+                <h2 className="text-2xl font-bold text-white mb-2 font-mono">
+                  Coming in <span className="text-purple-400">{timeLeft}</span>s
+                </h2>
+                <p className="text-slate-400 mb-8 leading-relaxed">
+                  The lessons for <span className="text-purple-300 font-semibold">{topic?.title || 'this topic'}</span> are currently being written. Check back soon!
+                </p>
+              </>
+            ) : (
+              <>
+                <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-400 mb-2 animate-bounce">
+                  Time's Up! 🚀
+                </h2>
+                <p className="text-slate-400 mb-8 leading-relaxed animate-in fade-in duration-700">
+                  Just kidding! Writing top-tier Django lessons takes a <i className="text-slate-300">little</i> longer than 50 seconds. We're working hard on <span className="text-purple-300 font-semibold">{topic?.title || 'this topic'}</span> right now!
+                </p>
+              </>
+            )}
 
             <Link 
               to="/" 

@@ -178,7 +178,7 @@ python -m venv venv
 source venv/bin/activate
 
 # Activate (Windows)
-venv\Scripts\activate
+venv\Scripts\\activate
 
 # You'll see (venv) in your prompt
 (venv) $
@@ -1717,7 +1717,7 @@ urlpatterns = [
     re_path(r'^archive/(?P<year>[0-9]{4})/(?P<month>[0-9]{2})/$', views.archive),
 
     # Match /tag/python/ or /tag/django-rest/
-    re_path(r'^tag/(?P<slug>[-\w]+)/$', views.tag_detail),
+    re_path(r'^tag/(?P<slug>[-\\w]+)/$', views.tag_detail),
 ]
 ```
 
@@ -1758,9 +1758,9 @@ class URLPattern:
         self.name = name
         # Convert Django-style patterns to regex
         regex = pattern
-        regex = re.sub(r"<int:(\w+)>",  lambda m: f"(?P<{m.group(1)}>[0-9]+)", regex)
-        regex = re.sub(r"<slug:(\w+)>", lambda m: f"(?P<{m.group(1)}>[-a-zA-Z0-9_]+)", regex)
-        regex = re.sub(r"<str:(\w+)>",  lambda m: f"(?P<{m.group(1)}>[^/]+)", regex)
+        regex = re.sub(r"<int:(\\w+)>",  lambda m: f"(?P<{m.group(1)}>[0-9]+)", regex)
+        regex = re.sub(r"<slug:(\\w+)>", lambda m: f"(?P<{m.group(1)}>[-a-zA-Z0-9_]+)", regex)
+        regex = re.sub(r"<str:(\\w+)>",  lambda m: f"(?P<{m.group(1)}>[^/]+)", regex)
         self.regex = "^" + regex + "$"
 
     def match(self, path):
@@ -2630,7 +2630,7 @@ class Template:
 
         # {% if %} basic support
         def process_if(text, ctx):
-            pattern = r"\{%\s*if\s+(\w+)\s*%\}(.*?)\{%\s*endif\s*%\}"
+            pattern = r"\{%\s*if\s+(\\w+)\s*%\}(.*?)\{%\s*endif\s*%\}"
             def replace_if(m):
                 var, block = m.group(1), m.group(2)
                 val = ctx.get(var)
@@ -2643,7 +2643,7 @@ class Template:
 
         # {% for %} basic support
         def process_for(text, ctx):
-            pattern = r"\{%\s*for\s+(\w+)\s+in\s+(\w+)\s*%\}(.*?)\{%\s*endfor\s*%\}"
+            pattern = r"\{%\s*for\s+(\\w+)\s+in\s+(\\w+)\s*%\}(.*?)\{%\s*endfor\s*%\}"
             def replace_for(m):
                 item_name, list_name, body = m.group(1), m.group(2), m.group(3)
                 items = ctx.get(list_name, [])
@@ -2664,7 +2664,7 @@ class Template:
 
         # Simple for loop
         import re
-        for_match = re.search(r"\{%\s*for\s+(\w+)\s+in\s+(\w+)\s*%\}(.*?)\{%\s*endfor\s*%\}", result, re.DOTALL)
+        for_match = re.search(r"\{%\s*for\s+(\\w+)\s+in\s+(\\w+)\s*%\}(.*?)\{%\s*endfor\s*%\}", result, re.DOTALL)
         if for_match:
             item_name, list_name, body = for_match.group(1), for_match.group(2), for_match.group(3)
             items = context.get(list_name, [])
